@@ -1,3 +1,4 @@
+import os
 from time import sleep
 
 from camera_utils import _stub_create_file, _get_hour_prefix
@@ -17,7 +18,8 @@ class Camera:
         self.camera.rotation = rotation
 
     def record_video(self, filename='video', duration=5):
-        filename = self._build_filename(filename, 'h264')
+        filename = self._build_filepath(filename, 'h264')
+
         if self.env == 'dev':
             _stub_create_file(filename, 'record_video')
             return
@@ -28,7 +30,8 @@ class Camera:
         return filename
 
     def make_pic(self, filename='image', duration=5):
-        filename = self._build_filename(filename, 'jpg')
+        filename = self._build_filepath(filename, 'jpg')
+
         if self.env == 'dev':
             _stub_create_file(filename, 'make_pic')
             return
@@ -37,5 +40,7 @@ class Camera:
         self.camera.capture(filename)
         return filename
 
-    def _build_filename(self, filename, extension):
-        return f'{self.prefix}/{_get_hour_prefix()}/{filename}.{extension}'
+    def _build_filepath(self, filename, extension):
+        filename = f'{self.prefix}/{_get_hour_prefix()}/{filename}.{extension}'
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        return filename
