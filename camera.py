@@ -6,7 +6,7 @@ from camera_utils import _stub_create_file, _get_hour_prefix
 
 
 class Camera:
-    def __init__(self, resolution=(2592, 1944), framerate=15, rotation=0, env='dev'):
+    def __init__(self, resolution=(1644, 1644), zoom=(0.05, 0.15, 0.5, 0.5), framerate=15, rotation=0, env='dev'):
         self.env = env
         self.prefix = 'data'
         if env == 'dev':
@@ -17,6 +17,7 @@ class Camera:
         self.camera.resolution = resolution
         self.camera.framerate = framerate
         self.camera.rotation = rotation
+        self.camera.zoom = zoom
 
     def record_video(self, duration=5):
         filename = f'video-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}'
